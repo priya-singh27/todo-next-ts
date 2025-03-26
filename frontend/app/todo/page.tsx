@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import './todo.css'; 
+import './todo.css';
 
 function TodoManager() {
   const [todos, setTodos] = useState([]);
@@ -84,7 +84,6 @@ function TodoManager() {
         throw new Error(errorData.message || 'Operation failed');
       }
       
-      // Reset form and refresh list
       setTitle('');
       setDescription('');
       setEditingId(null);
@@ -146,96 +145,113 @@ function TodoManager() {
   };
 
   return (
-    <div className="todo-container">
-      <div className="todo-header">
+    <main className="todo-container">
+      <header className="todo-header">
         <h1>Todo Manager</h1>
-        <button 
-          onClick={handleLogout}
-          className="logout-button"
-        >
-          Logout
-        </button>
-      </div>
+        <nav>
+          <button 
+            onClick={handleLogout}
+            className="logout-button"
+            aria-label="Logout"
+          >
+            Logout
+          </button>
+        </nav>
+      </header>
       
       {error && (
-        <div className="error-message">
+        <section className="error-message" role="alert">
           {error}
-        </div>
+        </section>
       )}
       
-      <form onSubmit={handleSubmit} className="todo-form">
-        <div className="form-group">
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Todo title"
-            className="input-field"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description (optional)"
-            className="input-field"
-          />
-        </div>
-        <div className="button-group">
-          <button 
-            type="submit" 
-            disabled={isLoading}
-            className="submit-button"
-          >
-            {editingId ? 'Update Todo' : 'Add Todo'}
-          </button>
-          {editingId && (
+      <section>
+        <h2 className="visually-hidden">Add or Edit Todo</h2>
+        <form onSubmit={handleSubmit} className="todo-form">
+          <div className="form-group">
+            <label htmlFor="todo-title" className="visually-hidden">Todo Title</label>
+            <input
+              id="todo-title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Todo title"
+              className="input-field"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="todo-description" className="visually-hidden">Todo Description</label>
+            <input
+              id="todo-description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Description (optional)"
+              className="input-field"
+            />
+          </div>
+          <div className="button-group">
             <button 
-              type="button" 
-              onClick={() => {
-                setTitle('');
-                setDescription('');
-                setEditingId(null);
-              }}
-              className="cancel-button"
+              type="submit" 
+              disabled={isLoading}
+              className="submit-button"
             >
-              Cancel
+              {editingId ? 'Update Todo' : 'Add Todo'}
             </button>
-          )}
-        </div>
-      </form>
+            {editingId && (
+              <button 
+                type="button" 
+                onClick={() => {
+                  setTitle('');
+                  setDescription('');
+                  setEditingId(null);
+                }}
+                className="cancel-button"
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+        </form>
+      </section>
 
-      {isLoading && !todos.length ? (
-        <p className="loading-text">Loading...</p>
-      ) : (
-        <ul className="todo-list">
-          {todos.length === 0 ? (
-            <p className="empty-list">No todos yet. Create one above!</p>
-          ) : (
-            todos.map(todo => (
-              <li key={todo.id} className="todo-item">
-                <h3 className="todo-title">{todo.title}</h3>
-                {todo.description && <p className="todo-description">{todo.description}</p>}
-                <div className="todo-actions">
-                  <button 
-                    onClick={() => startEditing(todo)}
-                    className="edit-button"
-                  >
-                    Edit
-                  </button>
-                  <button 
-                    onClick={() => handleDelete(todo.id)}
-                    className="delete-button"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))
-          )}
-        </ul>
-      )}
-    </div>
+      <section>
+        <h2 className="visually-hidden">Todo List</h2>
+        {isLoading && !todos.length ? (
+          <p className="loading-text">Loading...</p>
+        ) : (
+          <ul className="todo-list">
+            {todos.length === 0 ? (
+              <li className="empty-list">No todos yet. Create one above!</li>
+            ) : (
+              todos.map(todo => (
+                <li key={todo.id} className="todo-item">
+                  <article>
+                    <h3 className="todo-title">{todo.title}</h3>
+                    {todo.description && <p className="todo-description">{todo.description}</p>}
+                    <footer className="todo-actions">
+                      <button 
+                        onClick={() => startEditing(todo)}
+                        className="edit-button"
+                        aria-label={`Edit todo: ${todo.title}`}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(todo.id)}
+                        className="delete-button"
+                        aria-label={`Delete todo: ${todo.title}`}
+                      >
+                        Delete
+                      </button>
+                    </footer>
+                  </article>
+                </li>
+              ))
+            )}
+          </ul>
+        )}
+      </section>
+    </main>
   );
 }
 

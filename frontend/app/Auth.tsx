@@ -1,56 +1,60 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import './AuthWrapper.css'; 
 
-const AuthWrapper = ({ children }) => {
+interface AuthContextType {
+  isAuthenticated: boolean;
+  login: (token: string) => void;
+  logout: () => void;
+  loading: boolean;
+}
+
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        router.push('/login');
-        return;
-      }
+    // Check if user is authenticated on mount
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsAuthenticated(true);
+    }
+    setLoading(false);
+  }, []);
 
-      try {
-        const response = await fetch('http://localhost:3001/user/verify', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+  const login = (token: string) => {
+    localStorage.setItem('token', token);
+    setIsAuthenticated(true);
+  };
 
-        if (response.ok) {
-          setIsAuthenticated(true);
-        } else {
-          localStorage.removeItem('token');
-          router.push('/login');
-        }
-      } catch (error) {
-        console.error('Auth check failed:', error);
-        router.push('/login');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('rememberUser');
+    setIsAuthenticated(false);
+    router.push('/login');
+  };
 
-    checkAuth();
-  }, [router]);
-
-  if (isLoading) {
-    return <div className="auth-loading">Loading...</div>;
-  }
-
-  if (!isAuthenticated) {
-    return null;
-  }
-
-  return <div className="auth-container">{children}</div>;
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export default AuthWrapper;
+export default AuthProvider;

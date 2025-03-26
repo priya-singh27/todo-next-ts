@@ -1,0 +1,211 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #fff;
+  padding: 20px;
+}
+  
+.loginCard {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.leftSection {
+  padding: 40px;
+  flex: 1;
+}
+
+.rightSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff6b6b;
+  padding: 40px;
+  width: 40%;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 12px;
+  color: #888;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.input:focus {
+  border-color: #ff6b6b;
+  outline: none;
+}
+
+.optionsGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.rememberMe {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.rememberLabel {
+  font-size: 14px;
+  color: #666;
+}
+
+.loginButton {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 8px;
+}
+
+.loginButton:hover {
+  background-color: #ff5252;
+}
+
+.loginButton:disabled {
+  background-color: #ffb3b3;
+  cursor: not-allowed;
+}
+
+.socialLogin {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.orLoginWith {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.orLoginWith::before,
+.orLoginWith::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 25%;
+  height: 1px;
+  background-color: #ddd;
+}
+
+.orLoginWith::before {
+  left: 0;
+}
+
+.orLoginWith::after {
+  right: 0;
+}
+
+.socialIcons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.socialIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.socialIcon:hover {
+  background-color: #e0e0e0;
+}
+
+.createAccount {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.createAccount a {
+  color: #ff6b6b;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.createAccount a:hover {
+  text-decoration: underline;
+}
+
+.errorMessage {
+  background-color: #ffebee;
+  color: #d32f2f;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .loginCard {
+    flex-direction: column-reverse;
+    max-width: 500px;
+  }
+  
+  .rightSection {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .rightSection img {
+    max-width: 200px;
+    height: auto;
+  }
+}
